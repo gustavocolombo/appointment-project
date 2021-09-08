@@ -1,11 +1,12 @@
 import 'reflect-metadata';
-
+import { errors } from 'celebrate';
 import express from 'express';
 import routes from './routes';
 import './database';
 
 const server = express();
 server.use(express.json());
+server.use(errors());
 server.use(routes);
 
 server.listen(3333, () => {

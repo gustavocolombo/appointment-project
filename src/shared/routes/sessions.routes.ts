@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import AuthenticateUserService from '../services/AuthenticateUserService';
+import { celebrate, Joi } from 'celebrate';
+import AuthenticateUserService from '../../modules/users/services/AuthenticateUserService';
 
 const sessionRoutes = Router();
 
-sessionRoutes.post('/login', async (request, response) => {
+sessionRoutes.post('/login', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().required().min(4).max(12),
+  }),
+}), async (request, response) => {
   try {
     const { email, password } = request.body;
 

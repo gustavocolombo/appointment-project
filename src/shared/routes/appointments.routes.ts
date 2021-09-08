@@ -1,10 +1,16 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
-import CreateAppointmentService from '../services/CreateAppointmentService';
+import { Joi, celebrate } from 'celebrate';
+import CreateAppointmentService from '../../modules/appointments/services/CreateAppointmentService';
 
 const appointmentsRouter = Router();
 
-appointmentsRouter.post('/', async (request, response) => {
+appointmentsRouter.post('/', celebrate({
+  body: Joi.object().keys({
+    date: Joi.date().required(),
+    provider: Joi.date().required(),
+  }),
+}), async (request, response) => {
   try {
     const { date, provider } = request.body;
 
