@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { errors } from 'celebrate';
 import express from 'express';
-import routes from '@shared/routes';
-import '@shared/database';
+import routes from '@shared/infra/http/routes';
+import '@shared/infra/database';
 
 const server = express();
 server.use(express.json());
