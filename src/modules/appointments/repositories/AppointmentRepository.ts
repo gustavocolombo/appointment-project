@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import Appointment from '../models/Appointment';
+import Appointment from '@modules/appointments/entities/Appointment';
 
 interface ICreateAppointment{
   date: Date;

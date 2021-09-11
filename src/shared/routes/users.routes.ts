@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { classToClass } from 'class-transformer';
 import { celebrate, Joi } from 'celebrate';
-import CreateUserService from '../../modules/users/services/CreateUserService';
+import CreateUserService from '@modules/users/services/CreateUserService';
 
 const usersRoutes = Router();
 
