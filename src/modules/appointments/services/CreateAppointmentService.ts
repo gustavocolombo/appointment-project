@@ -1,7 +1,7 @@
 import startOfHour from 'date-fns/startOfHour';
 import { getCustomRepository } from 'typeorm';
-import Appointment from '@modules/appointments/entities/Appointment';
-import AppointmentRepository from '@modules/appointments/repositories/AppointmentRepository';
+import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import AppointmentRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentRepository';
 
 interface ICreateAppointment{
   date: Date;

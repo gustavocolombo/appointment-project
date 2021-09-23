@@ -1,8 +1,8 @@
 import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import User from '@modules/users/entities/User';
-import UsersRepository from '@modules/users/repositories/UsersRepository';
+import User from '@modules/users/infra/typeorm/entities/User';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import authconfig from '../../../config/authconfig';
 
 interface ICreateSession{

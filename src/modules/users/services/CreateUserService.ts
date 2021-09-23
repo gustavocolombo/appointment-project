@@ -1,7 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
-import User from '@modules/users/entities/User';
-import UsersRepository from '@modules/users/repositories/UsersRepository';
+import User from '@modules/users/infra/typeorm/entities/User';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 interface ICreateUser{
   name: string;

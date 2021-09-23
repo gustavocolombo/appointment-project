@@ -16,6 +16,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "semi": "off",
         "class-methods-use-this":"off",
         "linebreak-style": "off",
         "camelcase":"off",
