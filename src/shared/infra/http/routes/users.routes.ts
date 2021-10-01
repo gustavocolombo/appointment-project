@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { classToClass } from 'class-transformer';
 import { celebrate, Joi } from 'celebrate';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import CreateUserService from '@modules/users/services/CreateUserService';
+import { container } from 'tsyringe'
 
 const usersRoutes = Router();
 
@@ -16,7 +16,7 @@ usersRoutes.post('/', celebrate({
   try {
     const { name, email, password } = request.body;
 
-    const userService = new CreateUserService(UsersRepository);
+    const userService = container.resolve(CreateUserService);
 
     const user = await userService.execute({ name, email, password });
 

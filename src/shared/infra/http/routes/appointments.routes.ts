@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { parseISO } from 'date-fns';
 import { Joi, celebrate } from 'celebrate';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
+import { container } from 'tsyringe';
 
 const appointmentsRouter = Router();
 
@@ -16,7 +17,7 @@ appointmentsRouter.post('/', celebrate({
 
     const parsedDate = parseISO(date);
 
-    const appointmentService = new CreateAppointmentService();
+    const appointmentService = container.resolve(CreateAppointmentService);
 
     const appointment = await appointmentService.execute({ date: parsedDate, provider });
 

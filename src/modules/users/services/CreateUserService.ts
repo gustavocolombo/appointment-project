@@ -1,5 +1,6 @@
 import { hash } from 'bcryptjs';
 import User from '@modules/users/infra/typeorm/entities/User';
+import { injectable, inject } from 'tsyringe';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface ICreateUser{
@@ -8,8 +9,12 @@ interface ICreateUser{
   password: string;
 }
 
+@injectable()
 export default class CreateUserService {
-  constructor(private userRepository: IUsersRepository) {}
+  constructor(
+    @inject()
+    private userRepository: IUsersRepository,
+  ) {}
 
   public async execute({ name, email, password }: ICreateUser): Promise<User> {
     const validateUser = await this.userRepository.findByEmail(email);
