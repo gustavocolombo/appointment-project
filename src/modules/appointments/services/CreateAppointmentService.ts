@@ -1,7 +1,6 @@
 import startOfHour from 'date-fns/startOfHour';
-import { getCustomRepository } from 'typeorm';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import AppointmentRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentRepository';
+import IAppointmentRepository from '../repositories/IAppointmentRepository';
 
 interface ICreateAppointment{
   date: Date;
@@ -9,19 +8,19 @@ interface ICreateAppointment{
 }
 
 export default class CreateAppointmentService {
-  public async execute({ date, provider }: ICreateAppointment): Promise<Appointment> {
-    const appointmentRepository = getCustomRepository(AppointmentRepository);
+  constructor(private appointmentsRepository: IAppointmentRepository) {}
 
+  public async execute({ date, provider }: ICreateAppointment): Promise<Appointment> {
     const startedHour = startOfHour(date);
-    const findAppointment = await appointmentRepository.findByDate({ date: startedHour });
+    const findAppointment = await this.appointmentsRepository.findByDate({ date: startedHour });
 
     if (findAppointment) {
       throw new Error('Cannot create appointment, another appointment in same date was found');
     }
 
-    const appointment = appointmentRepository.create({ date: startedHour, provider });
+    const appointment = this.appointmentsRepository.create({ date: startedHour, provider });
 
-    await appointmentRepository.save(appointment);
+    await this.appointmentsRepository.save(appointment);
 
     return appointment;
   }

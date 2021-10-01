@@ -1,7 +1,6 @@
-import { getCustomRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 import User from '@modules/users/infra/typeorm/entities/User';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface ICreateUser{
   name: string;
@@ -10,10 +9,10 @@ interface ICreateUser{
 }
 
 export default class CreateUserService {
-  public async execute({ name, email, password }: ICreateUser): Promise<User> {
-    const userRepository = getCustomRepository(UsersRepository);
+  constructor(private userRepository: IUsersRepository) {}
 
-    const validateUser = await userRepository.findByEmail(email);
+  public async execute({ name, email, password }: ICreateUser): Promise<User> {
+    const validateUser = await this.userRepository.findByEmail(email);
 
     if (validateUser) {
       throw new Error('Cannot create user, address email is already registered');
@@ -21,9 +20,7 @@ export default class CreateUserService {
 
     const hashedPassword = await hash(password, 8);
 
-    const user = userRepository.create({ name, email, password: hashedPassword });
-
-    await userRepository.save(user);
+    const user = await this.userRepository.create({ name, email, password: hashedPassword });
 
     return user;
   }

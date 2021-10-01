@@ -1,16 +1,20 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import IAppointmentRepository from '@modules/appointments/infra/repositories/IAppointmentRepository'
+import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository'
 
 interface ICreateAppointment{
   date: Date;
 }
 
-@EntityRepository(Appointment)
-export default class AppointmentRepository extends Repository<Appointment>
-  implements IAppointmentRepository {
+export default class AppointmentRepository implements IAppointmentRepository {
+  private ormRepository: Repository<Appointment>
+
+  constructor() {
+    this.ormRepository = getRepository(Appointment);
+  }
+
   public async findByDate({ date }:ICreateAppointment): Promise<Appoitnment|null> {
-    const findAppointment = await this.findOne(
+    const findAppointment = await this.ormRepository.findOne(
       { where: { date } },
     );
 

@@ -17,6 +17,7 @@
     ],
     "rules": {
         "semi": "off",
+        "no-useless-constructor": "off",
         "class-methods-use-this":"off",
         "linebreak-style": "off",
         "camelcase":"off",

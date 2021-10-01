@@ -23,6 +23,7 @@
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.1.0",
     "ts-node-dev": "^1.1.8",
+    "tsyringe": "^4.6.0",
     "typeorm": "^0.2.36",
     "uuidv4": "^6.2.11"
   },

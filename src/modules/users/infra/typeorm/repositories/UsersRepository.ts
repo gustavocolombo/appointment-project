@@ -1,11 +1,17 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
-import IUsersRepository from '../../repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
-@EntityRepository(User)
-export default class UsersRepository extends Repository<User> implements IUsersRepository {
+export default class UsersRepository implements IUsersRepository {
+  private ormRepository: Repository<User>
+
+  constructor() {
+    this.ormRepository = getRepository(User);
+  }
+
   public async findByName(name: string): Promise<User | null> {
-    const findUser = await this.findOne({
+    const findUser = await this.ormRepository.findOne({
       where: { name },
     });
 
@@ -13,7 +19,7 @@ export default class UsersRepository extends Repository<User> implements IUsersR
   }
 
   public async findByEmail(email: string): Promise<User | null> {
-    const findUser = await this.findOne({
+    const findUser = await this.ormRepository.findOne({
       where: { email },
     });
 
@@ -21,10 +27,18 @@ export default class UsersRepository extends Repository<User> implements IUsersR
   }
 
   public async findByUserById(id: string): Promise<User | null> {
-    const findUser = await this.findOne({
+    const findUser = await this.ormRepository.findOne({
       where: { id },
     });
 
     return findUser || null;
+  }
+
+  public async create({ name, email, password }: ICreateUserDTO): Promise<> {
+    const user = this.ormRepository.create({ name, email, password });
+
+    await this.ormRepository.save(user);
+
+    return user;
   }
 }
