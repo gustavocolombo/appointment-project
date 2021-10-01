@@ -1,5 +1,6 @@
 import startOfHour from 'date-fns/startOfHour';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import { inject, injectable } from 'tsyringe';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
 
 interface ICreateAppointment{
@@ -7,8 +8,12 @@ interface ICreateAppointment{
   provider: string;
 }
 
+@injectable()
 export default class CreateAppointmentService {
-  constructor(private appointmentsRepository: IAppointmentRepository) {}
+  constructor(
+    @inject()
+    private appointmentsRepository: IAppointmentRepository,
+  ) {}
 
   public async execute({ date, provider }: ICreateAppointment): Promise<Appointment> {
     const startedHour = startOfHour(date);

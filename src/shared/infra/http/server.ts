@@ -3,6 +3,7 @@ import { errors } from 'celebrate';
 import express from 'express';
 import routes from '@shared/infra/http/routes';
 import '@shared/infra/database';
+import '@shared/container'
 
 const server = express();
 server.use(express.json());

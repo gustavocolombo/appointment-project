@@ -1,9 +1,8 @@
-import { getCustomRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import User from '@modules/users/infra/typeorm/entities/User';
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import authconfig from '../../../config/authconfig';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface ICreateSession{
   email: string;
@@ -16,10 +15,10 @@ interface IResponseUser{
 }
 
 export default class CreateSessionService {
-  public async execute({ email, password }: ICreateSession): Promise<IResponseUser> {
-    const userRepository = getCustomRepository(UsersRepository);
+  constructor(private userRepository: IUsersRepository) {}
 
-    const user = await userRepository.findByEmail(email);
+  public async execute({ email, password }: ICreateSession): Promise<IResponseUser> {
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new Error('Combination email/password does not match');

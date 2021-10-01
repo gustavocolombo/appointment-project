@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { celebrate, Joi } from 'celebrate';
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
+import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 const sessionRoutes = Router();
 
@@ -13,7 +14,7 @@ sessionRoutes.post('/login', celebrate({
   try {
     const { email, password } = request.body;
 
-    const sessionService = new AuthenticateUserService();
+    const sessionService = new AuthenticateUserService(UsersRepository);
 
     const { user, jwtToken } = await sessionService.execute({ email, password });
 
